@@ -125,10 +125,76 @@ contract("AKEB", (accounts) => {
   it("off-chain computation evaluation", async () => {
     const auction = await AKEB.at(auctionAddress);
 
+    // Off-chain validation by Bidder 1
+    let winnerBid = await getWinnerBidFromOffChainCode();
+
+    console.log(`the winner bid calculated by off-chain code is ${winnerBid}`);
+    await compareWinnerBidWithBidderValue(
+      winnerBid,
+      bid1,
+      nonce1,
+      bidder1,
+      auction
+    );
+
+    // Off-chain validation by Bidder 2
+    winnerBid = await getWinnerBidFromOffChainCode();
+    await compareWinnerBidWithBidderValue(
+      winnerBid,
+      bid2,
+      nonce2,
+      bidder2,
+      auction
+    );
+
+    let currentWinner = await auction.winners(0);
+    assert(bidder2 === currentWinner.winnerAddress);
+
+    console.log("Bidder 2 has announced herself as the winner");
+
+    // Off-chain validation by Bidder 3
+    winnerBid = await getWinnerBidFromOffChainCode();
+    await compareWinnerBidWithBidderValue(
+      winnerBid,
+      bid3,
+      nonce3,
+      bidder3,
+      auction
+    );
+
+    currentWinner = await auction.winners(0);
+    assert(bidder3 === currentWinner.winnerAddress);
+
+    console.log("Winner is changed to bidder 3");
+  });
+
+  async function compareWinnerBidWithBidderValue(
+    winnerBid,
+    bid,
+    nonce,
+    bidder,
+    auction
+  ) {
+    // Dispute case
+    if (bid > winnerBid) {
+      console.log(`${bidder} is in Dispute case`);
+      await auction.dispute(bid, nonce, { from: bidder });
+    }
+    // Winner case
+    else if (bid === winnerBid) {
+      console.log(`${bidder} is in Winner case`);
+      await auction.submitWinner(bid, nonce, { from: bidder });
+    }
+    // Neutral case
+    else {
+      console.log(`${bidder} is in Neutral case`);
+      return;
+    }
+  }
+
+  async function getWinnerBidFromOffChainCode() {
     const res = await fetch("http://127.0.0.1.:8000/get-winner/");
     const data = await res.json();
-    const winnerBid = JSON.parse(data).winner;
-
-    console.log({ data }, { winnerBid });
-  });
+    return JSON.parse(data).winner;
+  }
 });
