@@ -136,23 +136,11 @@ contract("AKEB", (accounts) => {
     let winnerBid = await getWinnerBidFromOffChainCode();
 
     console.log(`the winner bid calculated by off-chain code is ${winnerBid}`);
-    await compareWinnerBidWithBidderValue(
-      winnerBid,
-      bidder1.bid,
-      bidder1.nonce,
-      bidder1.address,
-      auction
-    );
+    await compareWinnerBidWithBidderValue(winnerBid, bidder1, auction);
 
     // Off-chain validation by Bidder 2
     winnerBid = await getWinnerBidFromOffChainCode();
-    await compareWinnerBidWithBidderValue(
-      winnerBid,
-      bidder2.bid,
-      bidder2.nonce,
-      bidder2.address,
-      auction
-    );
+    await compareWinnerBidWithBidderValue(winnerBid, bidder2, auction);
 
     let currentWinner = await auction.winners(0);
     assert(bidder2.address === currentWinner.winnerAddress);
@@ -161,13 +149,7 @@ contract("AKEB", (accounts) => {
 
     // Off-chain validation by Bidder 3
     winnerBid = await getWinnerBidFromOffChainCode();
-    await compareWinnerBidWithBidderValue(
-      winnerBid,
-      bidder3.bid,
-      bidder3.nonce,
-      bidder3.address,
-      auction
-    );
+    await compareWinnerBidWithBidderValue(winnerBid, bidder3, auction);
 
     currentWinner = await auction.winners(0);
     assert(bidder3.address === currentWinner.winnerAddress);
@@ -175,26 +157,22 @@ contract("AKEB", (accounts) => {
     console.log("Winner is changed to bidder 3");
   });
 
-  async function compareWinnerBidWithBidderValue(
-    winnerBid,
-    bid,
-    nonce,
-    bidder,
-    auction
-  ) {
+  async function compareWinnerBidWithBidderValue(winnerBid, bidder, auction) {
     // Dispute case
-    if (bid > winnerBid) {
-      console.log(`${bidder} is in Dispute case`);
-      await auction.dispute(bid, nonce, { from: bidder });
+    if (bidder.bid > winnerBid) {
+      console.log(`${bidder.name} is in Dispute case`);
+      await auction.dispute(bidder.bid, bidder.nonce, { from: bidder.address });
     }
     // Winner case
-    else if (bid === winnerBid) {
-      console.log(`${bidder} is in Winner case`);
-      await auction.submitWinner(bid, nonce, { from: bidder });
+    else if (bidder.bid === winnerBid) {
+      console.log(`${bidder.name} is in Winner case`);
+      await auction.submitWinner(bidder.bid, bidder.nonce, {
+        from: bidder.address,
+      });
     }
     // Neutral case
     else {
-      console.log(`${bidder} is in Neutral case`);
+      console.log(`${bidder.name} is in Neutral case`);
       return;
     }
   }
