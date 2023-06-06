@@ -122,5 +122,13 @@ contract("AKEB", (accounts) => {
     );
   });
 
-  it("off-chain computation evaluation", async () => {});
+  it("off-chain computation evaluation", async () => {
+    const auction = await AKEB.at(auctionAddress);
+
+    const res = await fetch("http://127.0.0.1.:8000/get-winner/");
+    const data = await res.json();
+    const winnerBid = JSON.parse(data).winner;
+
+    console.log({ data }, { winnerBid });
+  });
 });
