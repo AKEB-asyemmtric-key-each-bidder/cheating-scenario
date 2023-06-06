@@ -3,35 +3,42 @@ const AKEB = artifacts.require("AKEB.sol");
 contract("AKEB", (accounts) => {
   const auctioneer = accounts[0];
   const seller = accounts[1];
-  const bidder1 = accounts[2];
-  const bid1 = 11;
-  const nonce1 = "bid1";
-  const hash1 =
-    "0x5647b2fc56179a52d9885e3188a4624e65f45772d1dc4ce067b8380d04a39977";
+  const bidder1 = {
+    name: "bidder1",
+    address: accounts[2],
+    bid: 11,
+    nonce: "bid1",
+    hash: "0x5647b2fc56179a52d9885e3188a4624e65f45772d1dc4ce067b8380d04a39977",
+  };
 
-  const bidder2 = accounts[3];
-  const bid2 = 22;
-  const nonce2 = "bid2";
-  const hash2 =
-    "0x50c3208089b13dbbf91f80db31299cf2b996a7d2e671b5f49c6d513a89f63df1";
+  const bidder2 = {
+    name: "bidder2",
+    address: accounts[3],
+    bid: 22,
+    nonce: "bid2",
+    hash: "0x50c3208089b13dbbf91f80db31299cf2b996a7d2e671b5f49c6d513a89f63df1",
+  };
 
-  const bidder3 = accounts[4];
-  const bid3 = 33;
-  const nonce3 = "bid3";
-  const hash3 =
-    "0xcec60b8bf0259b4ebd98f5b55fd70f78622e0623b1fff9f4e88c4cedcdbc0f5f";
+  const bidder3 = {
+    name: "bidder3",
+    address: accounts[4],
+    bid: 33,
+    nonce: "bid3",
+    hash: "0xcec60b8bf0259b4ebd98f5b55fd70f78622e0623b1fff9f4e88c4cedcdbc0f5f",
+  };
 
   let auctionAddress;
 
   before("before all", async () => {
+    const auction = await AKEB.new();
+    auctionAddress = auction.address;
+
     console.log(`Auctioneer: ${auctioneer}`);
     console.log(`Seller: ${seller}`);
-    console.log(`Bidder 1- address: ${bidder1}, bid:${bid1}, nonce:${nonce1}`);
-    console.log(`Bidder 2- address: ${bidder2}, bid:${bid2}, nonce:${nonce2}`);
-    console.log(`Bidder 3- address: ${bidder3}, bid:${bid3}, nonce:${nonce3}`);
-    const auction = await AKEB.new();
+    console.log({ bidder1 });
+    console.log({ bidder2 });
+    console.log({ bidder3 });
     console.log("Auction smart contract is created");
-    auctionAddress = auction.address;
     console.log(
       `Auction smart contract address in your local machine:${auctionAddress}`
     );
@@ -53,9 +60,9 @@ contract("AKEB", (accounts) => {
 
   it("Register bidders", async () => {
     const auction = await AKEB.at(auctionAddress);
-    await auction.registerBidder({ from: bidder1 });
-    await auction.registerBidder({ from: bidder2 });
-    await auction.registerBidder({ from: bidder3 });
+    await auction.registerBidder({ from: bidder1.address });
+    await auction.registerBidder({ from: bidder2.address });
+    await auction.registerBidder({ from: bidder3.address });
     console.log("bidder 1,2,3 registered into smart contract");
 
     await fetch("http://127.0.0.1.:8000/increment-number-of-bidders/");
@@ -68,17 +75,17 @@ contract("AKEB", (accounts) => {
     const participant2 = await auction.bidders(1);
     const participant3 = await auction.bidders(2);
 
-    assert(bidder1 == participant1);
-    assert(bidder2 == participant2);
-    assert(bidder3 == participant3);
+    assert(bidder1.address == participant1);
+    assert(bidder2.address == participant2);
+    assert(bidder3.address == participant3);
   });
 
   it("submit encoded bid into smart-contract and off-chain code", async () => {
     const auction = await AKEB.at(auctionAddress);
 
-    await auction.submitEncodedBid(hash1, { from: bidder1 });
-    await auction.submitEncodedBid(hash2, { from: bidder2 });
-    await auction.submitEncodedBid(hash3, { from: bidder3 });
+    await auction.submitEncodedBid(bidder1.hash, { from: bidder1.address });
+    await auction.submitEncodedBid(bidder2.hash, { from: bidder2.address });
+    await auction.submitEncodedBid(bidder3.hash, { from: bidder3.address });
 
     console.log("bidders 1,2,3 submitted encoded bid into blockchain");
 
@@ -91,33 +98,33 @@ contract("AKEB", (accounts) => {
 
     await fetch("http://127.0.0.1.:8000/submit-bid/", {
       ...headers,
-      body: JSON.stringify({ bid: bid1 }),
+      body: JSON.stringify({ bid: bidder1.bid }),
     });
     await fetch("http://127.0.0.1.:8000/submit-bid/", {
       ...headers,
-      body: JSON.stringify({ bid: bid2 }),
+      body: JSON.stringify({ bid: bidder2.bid }),
     });
     await fetch("http://127.0.0.1.:8000/submit-bid/", {
       ...headers,
-      body: JSON.stringify({ bid: bid3 }),
+      body: JSON.stringify({ bid: bidder3.bid }),
     });
 
     console.log("Bidders 1,2,3 sent their bids into off-chain code");
 
-    const hash1FromSM = await auction.encodedBids(bidder1);
-    const hash2FromSM = await auction.encodedBids(bidder2);
-    const hash3FromSM = await auction.encodedBids(bidder3);
+    const hash1FromSM = await auction.encodedBids(bidder1.address);
+    const hash2FromSM = await auction.encodedBids(bidder2.address);
+    const hash3FromSM = await auction.encodedBids(bidder3.address);
 
     assert(
-      hash1 == hash1FromSM,
+      bidder1.hash == hash1FromSM,
       "hash1 is not correctly submitted into Smart contract"
     );
     assert(
-      hash2 == hash2FromSM,
+      bidder2.hash == hash2FromSM,
       "hash2 is not correctly submitted into Smart contract"
     );
     assert(
-      hash3 == hash3FromSM,
+      bidder3.hash == hash3FromSM,
       "hash3 is not correctly submitted into Smart contract"
     );
   });
@@ -131,9 +138,9 @@ contract("AKEB", (accounts) => {
     console.log(`the winner bid calculated by off-chain code is ${winnerBid}`);
     await compareWinnerBidWithBidderValue(
       winnerBid,
-      bid1,
-      nonce1,
-      bidder1,
+      bidder1.bid,
+      bidder1.nonce,
+      bidder1.address,
       auction
     );
 
@@ -141,14 +148,14 @@ contract("AKEB", (accounts) => {
     winnerBid = await getWinnerBidFromOffChainCode();
     await compareWinnerBidWithBidderValue(
       winnerBid,
-      bid2,
-      nonce2,
-      bidder2,
+      bidder2.bid,
+      bidder2.nonce,
+      bidder2.address,
       auction
     );
 
     let currentWinner = await auction.winners(0);
-    assert(bidder2 === currentWinner.winnerAddress);
+    assert(bidder2.address === currentWinner.winnerAddress);
 
     console.log("Bidder 2 has announced herself as the winner");
 
@@ -156,14 +163,14 @@ contract("AKEB", (accounts) => {
     winnerBid = await getWinnerBidFromOffChainCode();
     await compareWinnerBidWithBidderValue(
       winnerBid,
-      bid3,
-      nonce3,
-      bidder3,
+      bidder3.bid,
+      bidder3.nonce,
+      bidder3.address,
       auction
     );
 
     currentWinner = await auction.winners(0);
-    assert(bidder3 === currentWinner.winnerAddress);
+    assert(bidder3.address === currentWinner.winnerAddress);
 
     console.log("Winner is changed to bidder 3");
   });
