@@ -60,7 +60,7 @@ contract("AKEB", (accounts) => {
     assert(seller === sellerAddressInSM);
   });
 
-  it("Register bidders", async () => {
+  it("Registering bidders", async () => {
     const auction = await AKEB.at(auctionAddress);
     await auction.registerBidder({ from: bidder1.address });
     await auction.registerBidder({ from: bidder2.address });
@@ -83,7 +83,7 @@ contract("AKEB", (accounts) => {
     assert(bidder3.address == participant3);
   });
 
-  it("submit encoded bid into smart-contract and off-chain code", async () => {
+  it("submitting encoded bid into smart-contract and off-chain code", async () => {
     const auction = await AKEB.at(auctionAddress);
 
     await auction.submitEncodedBid(bidder1.hash, { from: bidder1.address });
@@ -133,7 +133,7 @@ contract("AKEB", (accounts) => {
     await compareWinnerBidWithBidderValue(winnerBid, bidder1, auction);
   });
 
-  it("Off-chain computation evaluation by bidder2 and INCORRECT winner submission", async () => {
+  it("Off-chain computation evaluation by bidder2", async () => {
     const auction = await AKEB.at(auctionAddress);
 
     winnerBid = await getWinnerBidFromOffChainCode();
@@ -141,11 +141,9 @@ contract("AKEB", (accounts) => {
 
     let currentWinner = await auction.winners(0);
     assert(bidder2.address === currentWinner.winnerAddress);
-
-    console.log("Bidder 2 has announced herself as the winner");
   });
 
-  it("Off-chain computation evaluation by bidder3 and valid dispute request, leading to winner change", async () => {
+  it("Off-chain computation evaluation by bidder3", async () => {
     const auction = await AKEB.at(auctionAddress);
 
     winnerBid = await getWinnerBidFromOffChainCode();
@@ -153,8 +151,6 @@ contract("AKEB", (accounts) => {
 
     currentWinner = await auction.winners(0);
     assert(bidder3.address === currentWinner.winnerAddress);
-
-    console.log("Winner is changed to bidder 3");
   });
 
   async function compareWinnerBidWithBidderValue(winnerBid, bidder, auction) {
@@ -162,6 +158,8 @@ contract("AKEB", (accounts) => {
     if (bidder.bid > winnerBid) {
       console.log(`${bidder.name} is in Dispute case`);
       await auction.dispute(bidder.bid, bidder.nonce, { from: bidder.address });
+      console.log(`Dispute request of ${bidder.name} is valid`);
+      console.log(`Winner is changed to ${bidder.name}`);
     }
     // Winner case
     else if (bidder.bid === winnerBid) {
@@ -169,6 +167,7 @@ contract("AKEB", (accounts) => {
       await auction.submitWinner(bidder.bid, bidder.nonce, {
         from: bidder.address,
       });
+      console.log(`Winner is changed to ${bidder.name}`);
     }
     // Neutral case
     else {
