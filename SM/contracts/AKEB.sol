@@ -121,7 +121,7 @@ contract AKEB {
     function submitEncodedBid(
         bytes32 inputEncodedBid
     ) public checkIfAuctionIsStarted onlyBidders {
-        // These two lines are commented for units test to pass, uncomment for user testing
+        // These two lines are commented for units test to pass, uncomment for user manual testing
         // require(block.timestamp > registerBidderPeriod, "Hashed bid submission phase is not started yet.");
         // require(block.timestamp < hashedBidSubmissionPeriod, "Time for hashed bid submission is passed");
 
@@ -133,7 +133,7 @@ contract AKEB {
         uint256 inputWinnerBid,
         string memory inputwinnerNonce
     ) public checkIfAuctionIsStarted onlyBidders {
-        // These two lines are commented for units test to pass, uncomment for user testing
+        // These two lines are commented for units test to pass, uncomment for user manual testing
         // require(block.timestamp > hashedBidSubmissionPeriod, "Winner submission phase has not started yet.");
         // require(block.timestamp < winnerAndDisputeSubmissionPeriod, "Winner submission time has passed.");
 
@@ -151,7 +151,7 @@ contract AKEB {
         uint256 inputDisputedBid,
         string memory inputDisputedNonce
     ) public checkIfAuctionIsStarted onlyBidders {
-        // These two lines are commented for units test to pass, uncomment for user testing
+        // These two lines are commented for units test to pass, uncomment for user manual testing
         // require(block.timestamp > hashedBidSubmissionPeriod, "Dispute phase has not started yet.");
         // require(block.timestamp < winnerAndDisputeSubmissionPeriod, "Dispute phase has passed.");
 
