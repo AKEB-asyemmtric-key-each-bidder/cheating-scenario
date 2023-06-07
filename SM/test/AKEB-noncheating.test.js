@@ -33,6 +33,7 @@ contract("AKEB", (accounts) => {
     const auction = await AKEB.new();
     auctionAddress = auction.address;
 
+    console.log("***********NON CHEATING SCENARIO STARTED**************");
     console.log(`Auctioneer: ${auctioneer}`);
     console.log(`Seller: ${seller}`);
     console.log({ bidder1 });
@@ -147,6 +148,10 @@ contract("AKEB", (accounts) => {
 
     currentWinner = await auction.winners(0);
     assert(bidder3.address === currentWinner.winnerAddress);
+  });
+
+  after("Logging", () => {
+    console.log("***********NON CHEATING SCENARIO FINISHED**************");
   });
 
   async function compareWinnerBidWithBidderValue(winnerBid, bidder, auction) {
