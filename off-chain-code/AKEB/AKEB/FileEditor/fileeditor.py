@@ -38,16 +38,24 @@ class FileEditor:
             json.dump(dict, f)
         f.close()
 
-    def submitBid(self, bid):
+    def submitBid(self, bid, isCheatingScenario):
         self.bids.append(bid)
         self.numberOfSubmittedBids += 1
         self.writeIntoFile()
 
         # All bidders have submitted bids
         if self.numberOfBidders == self.numberOfSubmittedBids:
-            self.findWinner()
+            if isCheatingScenario == True:
+                self.findWinnerIncorrectly()
+            else:
+                self.findWinner()
 
     def findWinner(self):
+        self.winner = max(self.bids)
+        # self.winner = min(self.bids)
+        self.writeIntoFile()
+
+    def findWinnerIncorrectly(self):
         # self.winner = max(self.bids)
         # self.winner = min(self.bids)
         self.winner = self.bids[1]

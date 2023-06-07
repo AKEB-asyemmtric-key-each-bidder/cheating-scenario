@@ -16,7 +16,15 @@ def incrementNumberOfBidders(request):
 def submitBid(request):
     bid = request.data['bid']
     fileEditor = FileEditor()
-    fileEditor.submitBid(bid)
+    fileEditor.submitBid(bid, False)
+    return Response(None, status=status.HTTP_201_CREATED)
+
+
+@api_view(['POST'])
+def submitBidInCheatingScenario(request):
+    bid = request.data['bid']
+    fileEditor = FileEditor()
+    fileEditor.submitBid(bid, True)
     return Response(None, status=status.HTTP_201_CREATED)
 
 

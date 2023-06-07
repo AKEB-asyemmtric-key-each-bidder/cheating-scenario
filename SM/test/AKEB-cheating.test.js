@@ -99,15 +99,15 @@ contract("AKEB", (accounts) => {
       },
     };
 
-    await fetch("http://127.0.0.1.:8000/submit-bid/", {
+    await fetch("http://127.0.0.1.:8000/submit-bid/cheating/", {
       ...headers,
       body: JSON.stringify({ bid: bidder1.bid }),
     });
-    await fetch("http://127.0.0.1.:8000/submit-bid/", {
+    await fetch("http://127.0.0.1.:8000/submit-bid/cheating/", {
       ...headers,
       body: JSON.stringify({ bid: bidder2.bid }),
     });
-    await fetch("http://127.0.0.1.:8000/submit-bid/", {
+    await fetch("http://127.0.0.1.:8000/submit-bid/cheating/", {
       ...headers,
       body: JSON.stringify({ bid: bidder3.bid }),
     });
@@ -126,7 +126,6 @@ contract("AKEB", (accounts) => {
   it("Off-chain computation evaluation by bidder1", async () => {
     const auction = await AKEB.at(auctionAddress);
 
-    // Off-chain validation by Bidder 1
     let winnerBid = await getWinnerBidFromOffChainCode();
 
     console.log(`the winner bid calculated by off-chain code is ${winnerBid}`);
