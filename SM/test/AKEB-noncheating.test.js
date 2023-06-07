@@ -1,6 +1,7 @@
 const AKEB = artifacts.require("AKEB.sol");
 
 contract("AKEB", (accounts) => {
+  const baseOffChainCodeAddress = "http://127.0.0.1.:8000";
   const auctioneer = accounts[0];
   const seller = accounts[1];
   const bidder1 = {
@@ -69,9 +70,9 @@ contract("AKEB", (accounts) => {
 
     console.log("bidder 1,2,3 registered into smart contract");
 
-    await fetch("http://127.0.0.1.:8000/increment-number-of-bidders/");
-    await fetch("http://127.0.0.1.:8000/increment-number-of-bidders/");
-    await fetch("http://127.0.0.1.:8000/increment-number-of-bidders/");
+    await fetch(`${baseOffChainCodeAddress}/increment-number-of-bidders/`);
+    await fetch(`${baseOffChainCodeAddress}/increment-number-of-bidders/`);
+    await fetch(`${baseOffChainCodeAddress}/increment-number-of-bidders/`);
 
     console.log("bidder 1,2,3 registered into off-chain code");
 
@@ -100,15 +101,15 @@ contract("AKEB", (accounts) => {
       },
     };
 
-    await fetch("http://127.0.0.1.:8000/submit-bid/", {
+    await fetch(`${baseOffChainCodeAddress}/submit-bid/`, {
       ...headers,
       body: JSON.stringify({ bid: bidder1.bid }),
     });
-    await fetch("http://127.0.0.1.:8000/submit-bid/", {
+    await fetch(`${baseOffChainCodeAddress}/submit-bid/`, {
       ...headers,
       body: JSON.stringify({ bid: bidder2.bid }),
     });
-    await fetch("http://127.0.0.1.:8000/submit-bid/", {
+    await fetch(`${baseOffChainCodeAddress}/submit-bid/`, {
       ...headers,
       body: JSON.stringify({ bid: bidder3.bid }),
     });
@@ -178,7 +179,7 @@ contract("AKEB", (accounts) => {
   }
 
   async function getWinnerBidFromOffChainCode() {
-    const res = await fetch("http://127.0.0.1.:8000/get-winner/");
+    const res = await fetch(`${baseOffChainCodeAddress}/get-winner/`);
     const data = await res.json();
     return JSON.parse(data).winner;
   }
