@@ -47,8 +47,10 @@ contract("AKEB", (accounts) => {
   it("Registering Asset info", async () => {
     const auction = await AKEB.at(auctionAddress);
     await auction.registerAuctionInfo("Watch", "Great watch", { from: seller });
+
     console.log(`Seller registers Asset information into smart contract`);
     console.log(`Asset name:Watch - Asset description: Great watch`);
+
     const assetName = await auction.assetName();
     const assetDesc = await auction.assetDescription();
     const sellerAddressInSM = await auction.seller();
@@ -63,6 +65,7 @@ contract("AKEB", (accounts) => {
     await auction.registerBidder({ from: bidder1.address });
     await auction.registerBidder({ from: bidder2.address });
     await auction.registerBidder({ from: bidder3.address });
+
     console.log("bidder 1,2,3 registered into smart contract");
 
     await fetch("http://127.0.0.1.:8000/increment-number-of-bidders/");
@@ -115,21 +118,12 @@ contract("AKEB", (accounts) => {
     const hash2FromSM = await auction.encodedBids(bidder2.address);
     const hash3FromSM = await auction.encodedBids(bidder3.address);
 
-    assert(
-      bidder1.hash == hash1FromSM,
-      "hash1 is not correctly submitted into Smart contract"
-    );
-    assert(
-      bidder2.hash == hash2FromSM,
-      "hash2 is not correctly submitted into Smart contract"
-    );
-    assert(
-      bidder3.hash == hash3FromSM,
-      "hash3 is not correctly submitted into Smart contract"
-    );
+    assert(bidder1.hash == hash1FromSM);
+    assert(bidder2.hash == hash2FromSM);
+    assert(bidder3.hash == hash3FromSM);
   });
 
-  it("off-chain computation evaluation", async () => {
+  it("Off-chain computation evaluation by bidder1", async () => {
     const auction = await AKEB.at(auctionAddress);
 
     // Off-chain validation by Bidder 1
@@ -137,8 +131,11 @@ contract("AKEB", (accounts) => {
 
     console.log(`the winner bid calculated by off-chain code is ${winnerBid}`);
     await compareWinnerBidWithBidderValue(winnerBid, bidder1, auction);
+  });
 
-    // Off-chain validation by Bidder 2
+  it("Off-chain computation evaluation by bidder2 and INCORRECT winner submission", async () => {
+    const auction = await AKEB.at(auctionAddress);
+
     winnerBid = await getWinnerBidFromOffChainCode();
     await compareWinnerBidWithBidderValue(winnerBid, bidder2, auction);
 
@@ -146,8 +143,11 @@ contract("AKEB", (accounts) => {
     assert(bidder2.address === currentWinner.winnerAddress);
 
     console.log("Bidder 2 has announced herself as the winner");
+  });
 
-    // Off-chain validation by Bidder 3
+  it("Off-chain computation evaluation by bidder3 and valid dispute request, leading to winner change", async () => {
+    const auction = await AKEB.at(auctionAddress);
+
     winnerBid = await getWinnerBidFromOffChainCode();
     await compareWinnerBidWithBidderValue(winnerBid, bidder3, auction);
 
