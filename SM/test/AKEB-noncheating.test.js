@@ -1,7 +1,8 @@
 const AKEB = artifacts.require("AKEB.sol");
 
 contract("AKEB", (accounts) => {
-  const baseOffChainCodeAddress = "http://127.0.0.1:8000";
+  // http://off-chain-code:8000 is the django container name
+  const baseOffChainCodeAddress = "http://off-chain-code:8000";
   const auctioneer = accounts[0];
   const seller = accounts[1];
   const bidder1 = {
