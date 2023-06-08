@@ -15,7 +15,8 @@ services:
       context: ./SM
     ports:
       - "8545:8545"
-    volumes:
-      - ./SM:/smart-contract
+    # Commented to not corrupt the node_modules folder in container
+    # volumes:
+    #   - ./SM:/smart-contract
     command: >
-      sh -c "npm install && truffle test"
+      sh -c "truffle test"
