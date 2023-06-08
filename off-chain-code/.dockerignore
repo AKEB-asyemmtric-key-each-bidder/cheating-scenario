@@ -1,0 +1,15 @@
+# Git
+.git
+.gitignore
+
+# Docker
+.docker
+
+# Python
+AKEB/AKEB/__pycache__/
+AKEB/AKEB/*/__pycache__/
+AKEB/AKEB/*/*/__pycache__/
+AKEB/AKEB/*/*/*/__pycache__/
+AKBE/.env/
+AKBE/.venv/
+AKBE/venv/
