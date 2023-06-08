@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  off-chain-code:
+    build:
+      context: ./off-chain-code
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./off-chain-code/AKEB:/AKEB
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
