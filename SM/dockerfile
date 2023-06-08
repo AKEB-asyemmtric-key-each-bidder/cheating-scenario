@@ -1,4 +1,4 @@
-FROM node:16-bullseye-slim
+FROM node:18.16.0
 
 LABEL maintainer="Ehsan Ghasaei"
 
@@ -8,5 +8,5 @@ WORKDIR /smart-contract
 
 EXPOSE 8545
 
-RUN npm install && \
-    npm install -g truffle
+RUN npm install -g truffle
+

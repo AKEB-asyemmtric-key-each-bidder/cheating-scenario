@@ -18,4 +18,4 @@ services:
     volumes:
       - ./SM:/smart-contract
     command: >
-      sh -c "truffle test"
+      sh -c "npm install && truffle test"
