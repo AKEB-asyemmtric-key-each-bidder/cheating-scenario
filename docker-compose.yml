@@ -10,3 +10,12 @@ services:
       - ./off-chain-code/AKEB:/AKEB
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
+  smart-contract-and-front-end:
+    build:
+      context: ./SM
+    ports:
+      - "8545:8545"
+    volumes:
+      - ./SM:/smart-contract
+    command: >
+      sh -c "truffle test"
