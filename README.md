@@ -32,3 +32,10 @@ docker compose build
 
 <img width="1258" alt="Screenshot 2023-06-09 at 6 50 36 AM" src="https://github.com/AKEB-asyemmtric-key-each-bidder/scenarios/assets/32008442/e304d430-5de5-4884-afcf-a3fc934f6f79">
 
+6. Run the command below to execute the scenarios.
+
+```docker
+docker compose up
+```
+
+After running this command, you will see in the terminal that two scenarios (`cheating` and `non-cheating`) and the corresponding test cases are being executed. You can also observe the logs of the activities in the system.
