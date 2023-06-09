@@ -67,4 +67,8 @@ In our scenarios, the cheating happens in `off-chain-code` and the main objectiv
 
 ## Where in front-end script is this cheating detected?
 
-The front-end script performs the comparison and if detects if there has been any miscalculation by `Off-chain-code`
+The front-end script performs the comparison and if detects if there has been any miscalculation by `Off-chain-code`.
+
+![Screenshot 2023-06-09 at 7 30 53 AM](https://github.com/AKEB-asyemmtric-key-each-bidder/scenarios/assets/32008442/2ddfb229-5709-4cd6-9845-26496b7f5278)
+
+
