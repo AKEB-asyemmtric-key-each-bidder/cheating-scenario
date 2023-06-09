@@ -38,8 +38,17 @@ docker compose build
 docker compose up
 ```
 
-After running this command, you will see in the terminal that two scenarios (`cheating` and `non-cheating`) and the corresponding test cases are being executed. You can also observe the logs of the activities such as address of bidders, seller, auctioneer, smart contract address in the system.
+After running this command, you will see in the terminal that two scenarios (`cheating` and `non-cheating`) and the corresponding test cases are being executed.
 
 ![Screenshot 2023-06-09 at 6 57 31 AM](https://github.com/AKEB-asyemmtric-key-each-bidder/scenarios/assets/32008442/1050813a-5a65-4e55-9d1a-9061ba6bdc13)
+
+You can also observe the logs of the activities such as address of bidders, seller, auctioneer, smart contract address in the system.
+
 ![Screenshot 2023-06-09 at 7 01 15 AM](https://github.com/AKEB-asyemmtric-key-each-bidder/scenarios/assets/32008442/1b8f32e8-974c-4c3d-8e0d-6348c3e1498c)
 
+## System Structure
+
+The system consists of two main parts.
+
+1. Off-chain code
+2. Smart-contract & front-end script
