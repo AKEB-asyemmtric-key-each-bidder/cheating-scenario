@@ -62,3 +62,7 @@ The system consists of two main parts.
 ## Where does cheating happen?
 
 In our scenarios, the cheating happens in `off-chain-code` and the main objective of the system is the front-end to be capable of detecting such malicious activity.
+
+![Screenshot 2023-06-09 at 7 25 27 AM](https://github.com/AKEB-asyemmtric-key-each-bidder/scenarios/assets/32008442/9c25d8a9-d1e4-4bae-b775-3198cccfc768)
+
+
