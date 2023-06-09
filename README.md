@@ -30,4 +30,5 @@ docker compose build
 
 5. The command above generates two images: one is image for off-chain code and another one is an image for smart-contract and front-end.
 
-![docker-images](<Screenshot 2023-06-09 at 6.50.36 AM.png>)
+<img width="1258" alt="Screenshot 2023-06-09 at 6 50 36 AM" src="https://github.com/AKEB-asyemmtric-key-each-bidder/scenarios/assets/32008442/e304d430-5de5-4884-afcf-a3fc934f6f79">
+
