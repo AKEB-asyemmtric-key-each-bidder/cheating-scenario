@@ -52,3 +52,6 @@ The system consists of two main parts.
 
 1. Off-chain code
 2. Smart-contract & front-end script
+![Screenshot 2023-06-09 at 7 11 33 AM](https://github.com/AKEB-asyemmtric-key-each-bidder/scenarios/assets/32008442/58b0c7eb-395d-4b32-8591-141a3db4179d)
+
+
