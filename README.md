@@ -51,7 +51,14 @@ You can also observe the logs of the activities such as address of bidders, sell
 The system consists of two main parts.
 
 1. Off-chain code
-2. Smart-contract & front-end script
-![Screenshot 2023-06-09 at 7 11 33 AM](https://github.com/AKEB-asyemmtric-key-each-bidder/scenarios/assets/32008442/58b0c7eb-395d-4b32-8591-141a3db4179d)
+2. Smart-contract
+3. front-end script: The front-end script acts as a automated user-interface to let the users interact with smart-contract and off-chain code. Since there were 3 bidders in the system, I decided to write an automated front-end script to automatically execute all user actions. the front-end script is inside the `SM` folder.
 
+   - Cheating script: `SM/test/AKEB-cheating.test.js`
+   - Non-cheating script: `SM/test/AKEB-noncheating.test.js`
 
+   ![Screenshot 2023-06-09 at 7 11 33 AM](https://github.com/AKEB-asyemmtric-key-each-bidder/scenarios/assets/32008442/58b0c7eb-395d-4b32-8591-141a3db4179d)
+
+## Where does cheating happen?
+
+In our scenarios, the cheating happens in `off-chain-code` and the main objective of the system is the front-end to be capable of detecting such malicious activity.
