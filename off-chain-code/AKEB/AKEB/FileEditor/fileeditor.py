@@ -5,7 +5,6 @@ class FileEditor:
     numberOfBidders = 0
     numberOfSubmittedBids = 0
     numberOfAskedWinner = 0
-    bids = []
     winner = -1000
 
     def __init__(self):
@@ -18,7 +17,6 @@ class FileEditor:
         self.numberOfBidders = data["numberOfBidders"]
         self.numberOfSubmittedBids = data["numberOfSubmittedBids"]
         self.numberOfAskedWinner = data["numberOfAskedWinner"]
-        self.bids = data["bids"]
         self.winner = data["winner"]
 
     def incrementNumberOfBidders(self):
@@ -30,25 +28,12 @@ class FileEditor:
             "numberOfBidders": self.numberOfBidders,
             "numberOfSubmittedBids": self.numberOfSubmittedBids,
             "numberOfAskedWinner": self.numberOfAskedWinner,
-            "bids": self.bids,
             "winner": self.winner,
         }
 
         with open("AKEB/FileEditor/data.json", "w") as f:
             json.dump(dict, f)
         f.close()
-
-    def submitBid(self, bid, isCheatingScenario):
-        self.bids.append(bid)
-        self.numberOfSubmittedBids += 1
-        self.writeIntoFile()
-
-        # All bidders have submitted bids
-        if self.numberOfBidders == self.numberOfSubmittedBids:
-            if isCheatingScenario == True:
-                self.findWinnerIncorrectly()
-            else:
-                self.findWinner()
 
     def compareBidWithMax(self, bid, isCheatingScenario):
         self.numberOfSubmittedBids += 1
@@ -58,14 +43,6 @@ class FileEditor:
             if self.winner < bid:
                 self.winner = bid
 
-        self.writeIntoFile()
-
-    def findWinner(self):
-        self.winner = max(self.bids)
-        self.writeIntoFile()
-
-    def findWinnerIncorrectly(self):
-        self.winner = self.bids[1]
         self.writeIntoFile()
 
     def getWinner(self):
