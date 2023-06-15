@@ -5,33 +5,33 @@ from AKEB.FileEditor.fileeditor import FileEditor
 import json
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def incrementNumberOfBidders(request):
     fileEditor = FileEditor()
     fileEditor.incrementNumberOfBidders()
     return Response(None, status=status.HTTP_202_ACCEPTED)
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 def submitBid(request):
-    bid = request.data['bid']
+    bid = request.data["bid"]
     fileEditor = FileEditor()
-    fileEditor.submitBid(bid, False)
+    fileEditor.compareBidWithMax(bid, False)
     return Response(None, status=status.HTTP_201_CREATED)
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 def submitBidInCheatingScenario(request):
-    bid = request.data['bid']
+    bid = request.data["bid"]
     fileEditor = FileEditor()
-    fileEditor.submitBid(bid, True)
+    fileEditor.compareBidWithMax(bid, True)
     return Response(None, status=status.HTTP_201_CREATED)
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def getWinner(request):
     fileEditor = FileEditor()
     winner = fileEditor.getWinner()
-    dict = {'winner': winner}
+    dict = {"winner": winner}
     responseBody = json.dumps(dict)
     return Response(data=responseBody, status=status.HTTP_200_OK)
