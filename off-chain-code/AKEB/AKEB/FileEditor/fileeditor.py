@@ -38,6 +38,7 @@ class FileEditor:
     def compareBidWithMax(self, bid, isCheatingScenario):
         self.numberOfSubmittedBids += 1
         if isCheatingScenario:
+            # Malicious injected code
             self.winner = 22
         else:
             if self.winner < bid:
