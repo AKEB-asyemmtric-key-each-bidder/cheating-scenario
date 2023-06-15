@@ -12,14 +12,14 @@ class FileEditor:
         self.readValuesFromFile()
 
     def readValuesFromFile(self):
-        with open('AKEB/FileEditor/data.json', 'r') as f:
+        with open("AKEB/FileEditor/data.json", "r") as f:
             data = json.load(f)
 
-        self.numberOfBidders = data['numberOfBidders']
-        self.numberOfSubmittedBids = data['numberOfSubmittedBids']
-        self.numberOfAskedWinner = data['numberOfAskedWinner']
-        self.bids = data['bids']
-        self.winner = data['winner']
+        self.numberOfBidders = data["numberOfBidders"]
+        self.numberOfSubmittedBids = data["numberOfSubmittedBids"]
+        self.numberOfAskedWinner = data["numberOfAskedWinner"]
+        self.bids = data["bids"]
+        self.winner = data["winner"]
 
     def incrementNumberOfBidders(self):
         self.numberOfBidders += 1
@@ -27,14 +27,14 @@ class FileEditor:
 
     def writeIntoFile(self):
         dict = {
-            'numberOfBidders': self.numberOfBidders,
-            'numberOfSubmittedBids': self.numberOfSubmittedBids,
-            'numberOfAskedWinner': self.numberOfAskedWinner,
-            'bids': self.bids,
-            'winner': self.winner
+            "numberOfBidders": self.numberOfBidders,
+            "numberOfSubmittedBids": self.numberOfSubmittedBids,
+            "numberOfAskedWinner": self.numberOfAskedWinner,
+            "bids": self.bids,
+            "winner": self.winner,
         }
 
-        with open('AKEB/FileEditor/data.json', 'w') as f:
+        with open("AKEB/FileEditor/data.json", "w") as f:
             json.dump(dict, f)
         f.close()
 
@@ -49,6 +49,16 @@ class FileEditor:
                 self.findWinnerIncorrectly()
             else:
                 self.findWinner()
+
+    def compareBidWithMax(self, bid, isCheatingScenario):
+        self.numberOfSubmittedBids += 1
+        if isCheatingScenario:
+            self.winner = 22
+        else:
+            if self.winner < bid:
+                self.winner = bid
+
+        self.writeIntoFile()
 
     def findWinner(self):
         self.winner = max(self.bids)
