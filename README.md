@@ -63,7 +63,8 @@ The system consists of two main parts.
 
 In our scenarios, the cheating happens in `off-chain-code` and the main objective of the system is the front-end to be capable of detecting such malicious activity.
 
-![Screenshot 2023-06-09 at 7 25 27 AM](https://github.com/AKEB-asyemmtric-key-each-bidder/scenarios/assets/32008442/9c25d8a9-d1e4-4bae-b775-3198cccfc768)
+![Screenshot 2023-06-15 at 12 09 19 PM](https://github.com/AKEB-asyemmtric-key-each-bidder/scenarios/assets/32008442/bf40266d-80f5-41f3-aeab-7e5c8c902f9f)
+
 
 ## Where in front-end script is this cheating detected?
 
