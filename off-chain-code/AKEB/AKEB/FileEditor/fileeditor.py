@@ -1,5 +1,7 @@
 import json
 
+from AKEB.Cryptography.crypto import EncryptionDecryption
+
 
 class FileEditor:
     numberOfBidders = 0
@@ -12,7 +14,10 @@ class FileEditor:
 
     def readValuesFromFile(self):
         with open("AKEB/FileEditor/data.json", "r") as f:
-            data = json.load(f)
+            cipherTextInStr = json.load(f)["data"]
+
+        cryptoObj = EncryptionDecryption()
+        data = cryptoObj.decrypt(cipherTextInStr)
 
         self.numberOfBidders = data["numberOfBidders"]
         self.numberOfSubmittedBids = data["numberOfSubmittedBids"]
@@ -31,8 +36,13 @@ class FileEditor:
             "winner": self.winner,
         }
 
+        cryptoObj = EncryptionDecryption()
+        cipherTextInStr = cryptoObj.encrypt(dict)
+
+        data = {"data": cipherTextInStr}
+
         with open("AKEB/FileEditor/data.json", "w") as f:
-            json.dump(dict, f)
+            json.dump(data, f)
         f.close()
 
     def compareBidWithMax(self, bid, isCheatingScenario):
